@@ -1,0 +1,105 @@
+/* Enemy sprite: a ghost SVG (EnemySprite in sprites/EntitySprite.tsx) rendered
+   in an overlay span inside the cell. The overlay positioning itself lives in
+   App.css next to the other entity overlays; this file only colors and
+   animates the sprite. Variant classes (.enemy-1 … .enemy-10) are load-bearing
+   for gameplay logic — they must keep these exact names. */
+
+.enemy svg {
+    filter: drop-shadow(0 0 2px var(--enemy-color, #e74c3c));
+}
+
+.enemy .enemy-body {
+    fill: var(--enemy-color, #e74c3c);
+}
+
+.enemy .enemy-eye {
+    fill: #f4f6f7;
+}
+
+.enemy .enemy-pupil {
+    fill: #1b2631;
+}
+
+/* Gentle bobbing shared by all enemies; percentages keep it proportional to
+   the (very small, 6-16 px) cell so the sprite is never clipped away. */
+@keyframes enemy-float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5%);
+    }
+}
+
+.enemy {
+    animation: enemy-float 3s ease-in-out infinite;
+}
+
+/* 10 enemy variants — same ghost shape, distinct body colors. */
+
+/* Variant 1 - aggressive red */
+.enemy-1 {
+    --enemy-color: #e74c3c;
+}
+
+/* Variant 2 - mystical purple */
+.enemy-2 {
+    --enemy-color: #a56bd8;
+    animation-duration: 2.6s;
+}
+
+/* Variant 3 - watery blue */
+.enemy-3 {
+    --enemy-color: #3498db;
+    animation-duration: 3.4s;
+}
+
+/* Variant 4 - nature green */
+.enemy-4 {
+    --enemy-color: #27ae60;
+    animation-duration: 2.8s;
+}
+
+/* Variant 5 - volatile yellow */
+.enemy-5 {
+    --enemy-color: #f1c40f;
+    animation-duration: 2.2s;
+}
+
+/* Variant 6 - sunset orange */
+.enemy-6 {
+    --enemy-color: #ff7e5f;
+    animation-duration: 2.9s;
+}
+
+/* Variant 7 - steel blue (lightened from the old charcoal so it never reads
+   as a wall on the dark board) */
+.enemy-7 {
+    --enemy-color: #7f9bb8;
+    animation-duration: 3.6s;
+}
+
+/* Variant 8 - teal */
+.enemy-8 {
+    --enemy-color: #1abc9c;
+    animation-duration: 2.5s;
+}
+
+/* Variant 9 - aggressive dark red */
+.enemy-9 {
+    --enemy-color: #ff5b4d;
+    animation-duration: 3.1s;
+}
+
+/* Variant 10 - muted steel */
+.enemy-10 {
+    --enemy-color: #95a5a6;
+    animation-duration: 3.8s;
+}
+
+/* Accessibility / reduced-motion: disable non-essential animations */
+@media (prefers-reduced-motion: reduce) {
+    .enemy {
+        animation: none !important;
+    }
+}

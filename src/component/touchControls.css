@@ -1,0 +1,64 @@
+/* On-screen D-pad. Matrix theme via design tokens. Shown only on touch devices;
+   the keyboard (and swipe) stay the primary inputs elsewhere. */
+
+.touch-dpad {
+  display: none;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .touch-dpad {
+    position: fixed;
+    right: var(--space-5);
+    bottom: var(--space-5);
+    z-index: var(--z-overlay);
+    display: grid;
+    grid-template-columns: repeat(3, 56px);
+    grid-template-rows: repeat(3, 56px);
+    gap: var(--space-2);
+    opacity: 0.85;
+    touch-action: none;
+  }
+}
+
+.touch-dpad__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-lg);
+  color: var(--color-accent);
+  background: var(--color-surface);
+  border: var(--border-med) solid var(--color-border);
+  border-radius: var(--radius-lg);
+  text-shadow: var(--glow-accent-soft);
+  box-shadow: var(--shadow-panel);
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.touch-dpad__btn:active {
+  background: var(--color-surface-raised);
+  border-color: var(--color-accent);
+  filter: brightness(1.2);
+}
+
+/* Cross layout inside the 3×3 grid */
+.touch-dpad__btn--up {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.touch-dpad__btn--left {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.touch-dpad__btn--right {
+  grid-column: 3;
+  grid-row: 2;
+}
+
+.touch-dpad__btn--down {
+  grid-column: 2;
+  grid-row: 3;
+}

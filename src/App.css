@@ -1,0 +1,570 @@
+/* Game palette mapped onto the shared design tokens (see style/tokens.css).
+   These aliases keep the game-board rules terse while sourcing every value
+   from the Matrix token layer. */
+:root {
+    --bg: var(--color-bg);
+    --accent: var(--color-accent);
+    --accent-strong: var(--color-accent-strong);
+    --accent-soft: var(--color-accent-soft);
+    --grid-bg: var(--mx-green-900); /* maze background */
+    --wall: var(--color-maze-wall);
+    --path: var(--color-maze-path); /* dark phosphor corridor (Matrix restyle) */
+    --dot-color: var(--color-accent);
+
+    /* Player colors (game sprite) — Matrix phosphor green */
+    --player-base: var(--color-player-core); /* mouth/background visible through mouth */
+    --player-fill: var(--color-player); /* outer fill */
+    --player-glow: var(--color-player-glow);
+
+    /* Enemy / buff */
+    --enemy: var(--color-danger);
+    --buff: var(--color-buff);
+
+    /* UI panels */
+    --panel-bg: var(--color-surface);
+    --panel-border: var(--color-border-strong);
+}
+
+/* The game view locks scrolling; base body/typography live in index.css. */
+body {
+    overflow: hidden;
+}
+
+.app-container {
+    padding: var(--space-5);
+    background-color: var(--bg);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+}
+
+/* Title */
+.app-title {
+    color: var(--accent);
+    text-shadow: var(--glow-accent-strong);
+    font-size: var(--font-size-2xl);
+    letter-spacing: var(--tracking-wider);
+    margin-bottom: var(--space-8);
+    animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+    from {
+        text-shadow: 0 0 5px var(--accent), 0 0 10px var(--accent);
+    }
+    to {
+        text-shadow: 0 0 10px var(--accent), 0 0 20px var(--accent), 0 0 30px var(--accent);
+    }
+}
+
+/* css */
+.game-area {
+    display: flex;
+    gap: var(--space-5);
+    align-items: flex-start; /* prevent vertical stretching */
+    justify-content: center;
+    width: 100%;
+    padding: 0 var(--space-5);
+    box-sizing: border-box;
+    overflow: auto;
+}
+
+/* ensure the maze uses CSS Grid and doesn't shrink in the flex row */
+.maze-grid {
+    display: grid; /* required for gridTemplateColumns to work */
+    flex: 0 0 auto; /* prevent flexbox shrinking to 1px */
+    justify-content: start;
+    align-content: start;
+    gap: 0;
+}
+
+/* ensure each cell occupies its grid area cleanly */
+.maze-grid .cell {
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
+}
+
+/* Side panel tweak */
+.side-image-panel {
+    margin-left: 0;
+}
+
+/* Responsive: stack the status panel under the board on narrow screens */
+@media (max-width: 900px) {
+    .game-area {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .right-panel {
+        width: min(420px, 100%);
+    }
+
+    .side-image-panel {
+        margin-top: var(--space-3);
+    }
+}
+
+/* Compact the title on small phones so it doesn't crowd the board */
+@media (max-width: 600px) {
+    .app-container {
+        padding: var(--space-3);
+    }
+
+    .app-title {
+        font-size: var(--font-size-xl);
+        letter-spacing: var(--tracking-wide);
+        margin-bottom: var(--space-4);
+    }
+}
+
+.cell {
+    box-sizing: border-box;
+    overflow: hidden; /* keep visual effects inside each cell */
+    position: relative; /* anchor for entity sprite overlays */
+}
+
+/* Entity sprite overlays: rendered as child spans of the cell, so the cell's
+   own path background stays visible around the sprite. */
+.player,
+.enemy,
+.buff,
+.debuff {
+    position: absolute;
+    inset: 0;
+    display: block;
+    pointer-events: none;
+}
+
+.player svg,
+.enemy svg,
+.buff svg,
+.debuff svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.wall {
+    background-color: var(--wall);
+}
+
+.path {
+    background-color: var(--path);
+}
+
+/* dot (collectible) */
+.dot {
+    position: relative;
+    color: var(--dot-color);
+}
+
+.dot::after {
+    content: '';
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background-color: var(--dot-color);
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 5px var(--dot-color);
+    z-index: 10;
+}
+
+/* Player styling: SVG pacman sprite (PlayerSprite in sprites/EntitySprite.tsx).
+   The overlay span itself is positioned by the shared entity rules above. */
+.player {
+    z-index: 2;
+}
+
+.player svg {
+    filter: drop-shadow(0 0 3px var(--player-glow));
+}
+
+.player .pac-body {
+    fill: var(--player-fill);
+}
+
+.player .pac-eye {
+    fill: var(--player-base);
+}
+
+/* Invulnerability blink after hit */
+.player.invulnerable {
+    animation: player-blink 180ms steps(2) infinite;
+    filter: brightness(1.25) saturate(1.1);
+}
+
+@keyframes player-blink {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.35;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+/* Mouth chomp: the sprite carries an open and a closed mouth frame; toggle
+   their visibility in counter-phase for a two-frame animation. */
+.player .pac-open {
+    animation: pac-frame-a 0.6s steps(1, end) infinite;
+}
+
+.player .pac-closed {
+    opacity: 0;
+    animation: pac-frame-b 0.6s steps(1, end) infinite;
+}
+
+@keyframes pac-frame-a {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes pac-frame-b {
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+/* The sprite faces right; other directions rotate/mirror the whole SVG. */
+.player.left svg {
+    transform: scaleX(-1);
+}
+
+.player.up svg {
+    transform: rotate(-90deg);
+}
+
+.player.down svg {
+    transform: rotate(90deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .player .pac-open,
+    .player .pac-closed {
+        animation: none !important;
+    }
+}
+
+/* Lives display */
+.lives-display {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--accent);
+}
+
+.lives-label {
+    color: var(--accent-soft);
+    text-shadow: var(--glow-accent-soft);
+}
+
+.lives-hearts .heart {
+    color: var(--color-danger);
+    text-shadow: var(--glow-danger);
+    margin-right: var(--space-1);
+    font-size: 18px;
+}
+
+/* Score display */
+.score-display {
+    color: var(--accent);
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--space-3);
+    text-shadow: var(--glow-accent);
+}
+
+/* Right side status panel */
+.right-panel {
+    width: 260px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding: var(--space-3);
+}
+
+.panel-section {
+    background: var(--panel-bg);
+    border: var(--border-med) solid var(--panel-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-3);
+    box-shadow: var(--shadow-panel);
+}
+
+/* Timer block */
+.timer .timer-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.timer .timer-label {
+    color: var(--accent-soft);
+    letter-spacing: 0.5px;
+}
+
+.timer .timer-value {
+    color: var(--accent);
+    font-weight: var(--font-weight-bold);
+    text-shadow: var(--glow-accent);
+}
+
+.timer .timer-bar {
+    height: 10px;
+    border-radius: var(--radius-md);
+    background: var(--color-track);
+    border: var(--border-thin) solid var(--panel-border);
+    overflow: hidden;
+}
+
+.timer .timer-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--mx-green), var(--mx-green-dim));
+    box-shadow: var(--glow-accent-soft);
+    transition: width var(--transition-med);
+}
+
+/* Side panel progress card */
+.side-image-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.progress-heading {
+    font-size: var(--font-size-sm);
+    color: var(--accent-soft);
+    opacity: 0.9;
+}
+
+.progress-card {
+    background: var(--mx-black);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.35);
+}
+
+.progress-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.progress-percent {
+    font-size: var(--font-size-xs);
+    color: var(--accent);
+}
+
+.progress-meta {
+    font-size: var(--font-size-xs);
+    color: var(--color-text);
+    opacity: 0.85;
+}
+
+.progress-hint {
+    font-size: var(--font-size-xs);
+    opacity: 0.75;
+    margin-top: var(--space-2);
+    text-align: center;
+}
+
+/* Overlay panels (Game Over / Win) */
+.game-over-overlay,
+.hacked-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--color-overlay-scrim);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: var(--z-overlay);
+}
+
+.game-over-panel,
+.hacked-panel {
+    background: var(--panel-bg);
+    border: var(--border-med) solid var(--panel-border);
+    box-shadow: var(--shadow-overlay);
+    padding: var(--space-6) var(--space-8);
+    border-radius: var(--radius-lg);
+    text-align: center;
+    min-width: 280px;
+}
+
+.game-over-title {
+    color: var(--color-danger);
+    text-shadow: var(--glow-danger);
+    font-weight: var(--font-weight-black);
+    font-size: 28px;
+    letter-spacing: var(--tracking-wide);
+    margin-bottom: var(--space-4);
+}
+
+.retry-button,
+.deploy-button {
+    background: var(--mx-green-900);
+    color: var(--accent);
+    border: var(--border-med) solid var(--accent);
+    padding: var(--space-2) var(--space-4);
+    font-family: inherit;
+    font-weight: var(--font-weight-bold);
+    cursor: pointer;
+    border-radius: var(--radius-md);
+    text-shadow: var(--glow-accent);
+    box-shadow: var(--shadow-panel);
+}
+
+.retry-button:hover,
+.deploy-button:hover {
+    filter: brightness(1.15);
+}
+
+.hacked-title {
+    color: var(--accent-strong);
+    text-shadow: var(--glow-accent-strong);
+    font-weight: var(--font-weight-black);
+    font-size: 28px;
+    letter-spacing: var(--tracking-wide);
+    margin-bottom: var(--space-1);
+}
+
+.hacked-subtitle {
+    color: var(--color-accent-soft);
+    margin-bottom: var(--space-4);
+}
+
+/* Win-screen "hacked progress" image */
+.hacked-progress {
+    width: 240px;
+    height: 240px;
+    margin: var(--space-3) auto var(--space-5);
+    background: var(--mx-black);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+.hacked-progress__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Score-submission status line on the win screen */
+.score-status {
+    margin-bottom: var(--space-3);
+}
+
+.score-status--muted {
+    opacity: 0.85;
+}
+
+.score-status--success {
+    color: var(--color-accent-strong);
+    text-shadow: var(--glow-accent-soft);
+}
+
+.score-status--error {
+    color: var(--color-danger);
+}
+
+.score-retry {
+    background: transparent;
+    color: var(--color-accent);
+    border: var(--border-thin) solid var(--color-accent);
+    border-radius: var(--radius-sm);
+    padding: 2px var(--space-2);
+    cursor: pointer;
+}
+
+.score-retry:hover {
+    filter: brightness(1.2);
+}
+
+/* Bordered lives panel */
+.lives-panel {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-2) var(--space-3);
+    min-width: 120px;
+}
+
+/* keep existing label / hearts styles consistent */
+.lives-panel .lives-label {
+    font-size: var(--font-size-xs);
+    color: var(--accent-soft);
+    text-shadow: var(--glow-accent-soft);
+}
+
+.lives-panel .lives-hearts {
+    display: flex;
+    gap: var(--space-1);
+    align-items: center;
+}
+
+.lives-panel .heart {
+    font-size: 16px;
+    color: var(--color-danger);
+    text-shadow: var(--glow-danger);
+}
+
+/* Maze frame: border, padding, glow and prevent shrinking */
+.maze-frame {
+    background: linear-gradient(180deg, rgba(6, 20, 6, 0.95), var(--grid-bg));
+    padding: var(--space-2); /* space between border and grid */
+    border: var(--border-thick) solid var(--panel-border);
+    border-radius: var(--radius-xl);
+    box-shadow: 0 8px 30px rgba(0, 255, 65, 0.1), inset 0 0 10px rgba(0, 255, 65, 0.03);
+    flex: 0 0 auto; /* avoid flexbox shrinking to 1px */
+    align-self: flex-start;
+    width: max-content; /* fit the grid width */
+}
+
+/* Ensure the inner grid keeps its intrinsic size */
+.maze-frame .maze-grid {
+    display: grid; /* required for gridTemplateColumns */
+    gap: 0;
+    width: max-content;
+    box-sizing: content-box;
+}
+
+/* Slight inset border effect around cells so frame feels separated */
+.maze-frame .cell {
+    /*border-radius: 1px;*/
+    /*preserve existing cell sizing rules*/
+}
+
+/* Optional: stronger frame on small screens */
+@media (max-width: 900px) {
+    .maze-frame {
+        border-width: var(--border-med);
+        border-radius: var(--radius-lg);
+        padding: var(--space-2);
+    }
+}

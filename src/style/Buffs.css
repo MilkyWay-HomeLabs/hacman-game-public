@@ -1,0 +1,99 @@
+/* Buff sprite: a star SVG (BuffSprite in sprites/EntitySprite.tsx) rendered in
+   an overlay span inside the cell. Overlay positioning lives in App.css; this
+   file only colors and animates the sprite. Variant classes (.buff-1 …
+   .buff-10) are load-bearing for gameplay logic — keep these exact names. */
+
+.buff svg {
+    filter: drop-shadow(0 0 3px var(--buff-color, #00faff));
+}
+
+.buff .buff-body {
+    fill: var(--buff-color, #00faff);
+    stroke: rgba(255, 255, 255, 0.55);
+    stroke-width: 0.5;
+}
+
+/* Slow twinkle shared by all buffs. */
+@keyframes buff-twinkle {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(0.88);
+        opacity: 0.85;
+    }
+}
+
+.buff {
+    animation: buff-twinkle 2.6s ease-in-out infinite;
+}
+
+/* 10 buff variants — same star shape, distinct colors. */
+
+/* Variant 1 - health: warm pink */
+.buff-1 {
+    --buff-color: #ff9a9e;
+}
+
+/* Variant 2 - speed: aqua */
+.buff-2 {
+    --buff-color: #7ee8e0;
+    animation-duration: 2s;
+}
+
+/* Variant 3 - shield: cool blue */
+.buff-3 {
+    --buff-color: #6fb3ff;
+    animation-duration: 3.2s;
+}
+
+/* Variant 4 - damage: punchy orange */
+.buff-4 {
+    --buff-color: #ff7a59;
+    animation-duration: 2.4s;
+}
+
+/* Variant 5 - extra points: bright yellow */
+.buff-5 {
+    --buff-color: #f7ff6f;
+    animation-duration: 2.2s;
+}
+
+/* Variant 6 - teleport: cyan */
+.buff-6 {
+    --buff-color: #7afcff;
+    animation-duration: 2.8s;
+}
+
+/* Variant 7 - time bonus: soft purple */
+.buff-7 {
+    --buff-color: #9fa8ff;
+    animation-duration: 3.4s;
+}
+
+/* Variant 8 - invisibility: faint translucent star */
+.buff-8 {
+    --buff-color: rgba(255, 255, 255, 0.55);
+    opacity: 0.6;
+    animation-duration: 3.2s;
+}
+
+/* Variant 9 - magnet: warm peach */
+.buff-9 {
+    --buff-color: #fcb69f;
+    animation-duration: 2.6s;
+}
+
+/* Variant 10 - random effect: mint green */
+.buff-10 {
+    --buff-color: #6ee7b7;
+    animation-duration: 3.8s;
+}
+
+/* Accessibility / reduced-motion preference: disable animations */
+@media (prefers-reduced-motion: reduce) {
+    .buff {
+        animation: none !important;
+    }
+}

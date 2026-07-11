@@ -1,0 +1,46 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Environment files (local; commit only the *.example templates)
+.env
+.env.production
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+/public/images/0_0.jpg
+/public/images/0_10.jpg
+/public/images/0_20.jpg
+/public/images/0_30.jpg
+/public/images/0_40.jpg
+/public/images/0_50.jpg
+/public/images/0_60.jpg
+/public/images/0_70.jpg
+/public/images/0_80.jpg
+/public/images/0_90.jpg
+/public/images/0_100.jpg
+/coverage/
+/TODO
+
+# Playwright
+/playwright-report/
+/test-results/
+/playwright/.cache/
