@@ -1,0 +1,107 @@
+/* ============================================================================
+   Design tokens — the single source of truth for the app's visual system.
+   Theme: "Matrix" — phosphor green on black, monospace, terminal glow.
+   Consume these via var(--token); never hard-code colors/spacing/radii in
+   component or screen styles.
+   ============================================================================ */
+
+:root {
+  color-scheme: dark;
+
+  /* ---- Raw Matrix palette ------------------------------------------------ */
+  --mx-black: #000;
+  --mx-bg: #000600;            /* near-black with a green cast (page) */
+  --mx-surface: #010b01;       /* panel background */
+  --mx-surface-raised: #04140a;/* raised panel / dialog */
+  --mx-green-900: #001a05;     /* darkest green (fills, tracks) */
+  --mx-green-800: #0b3a17;     /* dark phosphor (maze corridors) */
+  --mx-green-700: #003b00;
+  --mx-green-dim: #008f11;      /* dim phosphor (borders, muted) */
+  --mx-green: #00ff41;         /* primary phosphor accent */
+  --mx-green-bright: #52ff8f;  /* hover / win highlight */
+  --mx-green-soft: #8aff8a;    /* labels */
+  --mx-green-faint: #b7ffb7;   /* body text */
+  --mx-danger: #ff3b3b;        /* enemies, game over */
+  --mx-danger-bright: #ff6b6b;
+  --mx-warning: #ffb300;       /* medium difficulty */
+  --mx-cyan: #00faff;          /* buffs */
+
+  /* ---- Semantic color aliases ------------------------------------------- */
+  --color-bg: var(--mx-bg);
+  --color-surface: var(--mx-surface);
+  --color-surface-raised: var(--mx-surface-raised);
+  --color-accent: var(--mx-green);
+  --color-accent-strong: var(--mx-green-bright);
+  --color-accent-soft: var(--mx-green-soft);
+  --color-text: var(--mx-green-faint);
+  --color-text-dim: #7fb37f;
+  --color-border: var(--mx-green-dim);
+  --color-border-strong: var(--mx-green);
+  --color-track: var(--mx-green-900);
+  --color-danger: var(--mx-danger);
+  --color-danger-bright: var(--mx-danger-bright);
+  --color-warning: var(--mx-warning);
+  --color-buff: var(--mx-cyan);
+  --color-overlay-scrim: rgba(0, 0, 0, 0.72);
+
+  /* difficulty accents (semantic) */
+  --color-difficulty-easy: var(--mx-green);
+  --color-difficulty-medium: var(--mx-warning);
+  --color-difficulty-hard: var(--mx-danger);
+
+  /* game board palette (maze cells + player sprite) */
+  --color-maze-wall: var(--mx-black);
+  --color-maze-path: var(--mx-green-800);       /* dark phosphor corridor */
+  --color-player: var(--mx-green-bright);        /* protagonist sprite fill */
+  --color-player-core: var(--mx-green-900);      /* shown through the mouth cut */
+  --color-player-glow: rgba(0, 255, 65, 0.9);
+
+  /* ---- Glows & shadows (terminal phosphor bloom) ------------------------ */
+  --glow-accent: 0 0 6px rgba(0, 255, 65, 0.55);
+  --glow-accent-strong: 0 0 10px rgba(0, 255, 65, 0.6), 0 0 20px rgba(0, 255, 65, 0.4);
+  --glow-accent-soft: 0 0 4px rgba(0, 255, 65, 0.35);
+  --glow-danger: 0 0 10px rgba(255, 59, 59, 0.6), 0 0 20px rgba(255, 59, 59, 0.4);
+  --shadow-panel: 0 0 14px rgba(0, 255, 65, 0.1);
+  --shadow-overlay: 0 0 24px rgba(0, 255, 65, 0.25);
+
+  /* ---- Spacing scale (4px base) ----------------------------------------- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+
+  /* ---- Radii ------------------------------------------------------------ */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-pill: 999px;
+
+  /* ---- Typography ------------------------------------------------------- */
+  --font-mono: 'Courier New', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+  --font-size-xs: 12px;
+  --font-size-sm: 14px;
+  --font-size-md: 1rem;
+  --font-size-lg: 1.2rem;
+  --font-size-xl: 1.5rem;
+  --font-size-2xl: 2.5rem;
+  --font-weight-normal: 400;
+  --font-weight-bold: 700;
+  --font-weight-black: 800;
+  --tracking-wide: 2px;
+  --tracking-wider: 5px;
+  --line-height-base: 1.5;
+
+  /* ---- Borders ---------------------------------------------------------- */
+  --border-thin: 1px;
+  --border-med: 2px;
+  --border-thick: 3px;
+
+  /* ---- Elevation / motion ----------------------------------------------- */
+  --z-overlay: 1000;
+  --transition-fast: 150ms ease;
+  --transition-med: 200ms ease;
+}

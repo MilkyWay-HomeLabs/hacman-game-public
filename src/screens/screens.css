@@ -1,0 +1,84 @@
+/* Full-screen entry states (loading / error). Matrix theme via design tokens. */
+
+.screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: var(--space-6);
+  text-align: center;
+  color: var(--color-text);
+  font-family: var(--font-mono);
+}
+
+/* Card that hosts the screen content — matches the dialog / overlay panel family
+   (see difficultyDialog.css, App.css) so every entry state reads as one system. */
+.screen__panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  width: min(420px, 100%);
+  padding: var(--space-8) var(--space-6);
+  background: var(--color-surface-raised);
+  border: var(--border-med) solid var(--color-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-overlay);
+}
+
+.screen__title {
+  font-size: var(--font-size-xl);
+  color: var(--color-accent);
+  letter-spacing: var(--tracking-wide);
+  text-shadow: var(--glow-accent);
+}
+
+.screen--error .screen__title {
+  color: var(--color-danger);
+  text-shadow: var(--glow-danger);
+}
+
+.screen__message {
+  max-width: 42ch;
+  color: var(--color-text-dim);
+}
+
+.screen__spinner {
+  width: 42px;
+  height: 42px;
+  border: var(--border-med) solid var(--color-track);
+  border-top-color: var(--color-accent);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--glow-accent-soft);
+  animation: screen-spin 0.9s linear infinite;
+}
+
+.screen__retry {
+  padding: var(--space-3) var(--space-5);
+  font: inherit;
+  color: var(--color-accent);
+  background: var(--color-surface);
+  border: var(--border-med) solid var(--color-accent);
+  border-radius: var(--radius-md);
+  text-shadow: var(--glow-accent);
+  box-shadow: var(--shadow-panel);
+  cursor: pointer;
+  transition: filter var(--transition-fast);
+}
+
+.screen__retry:hover {
+  filter: brightness(1.2);
+}
+
+@keyframes screen-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .screen__spinner {
+    animation: none;
+  }
+}

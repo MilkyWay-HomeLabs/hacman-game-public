@@ -1,0 +1,50 @@
+/* Global base styles. Design tokens + reset are imported first so every
+   downstream stylesheet can rely on them. Theme: Matrix (see style/tokens.css). */
+@import './style/tokens.css';
+@import './style/reset.css';
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  display: flex;
+  place-items: center;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-mono);
+  line-height: var(--line-height-base);
+  font-weight: var(--font-weight-normal);
+}
+
+#root {
+  margin: 0 auto;
+}
+
+a {
+  color: var(--color-accent);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--color-accent-strong);
+  text-shadow: var(--glow-accent);
+}
+
+button {
+  font-family: var(--font-mono);
+  cursor: pointer;
+  background-color: var(--color-surface);
+  color: var(--color-accent);
+  border: var(--border-thin) solid transparent;
+  border-radius: var(--radius-lg);
+  padding: 0.6em 1.2em;
+  transition: border-color var(--transition-fast), filter var(--transition-fast);
+}
+
+button:hover {
+  border-color: var(--color-accent);
+}
+
+:focus-visible {
+  outline: var(--border-med) solid var(--color-accent);
+  outline-offset: 2px;
+}

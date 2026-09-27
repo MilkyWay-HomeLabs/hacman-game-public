@@ -1,0 +1,114 @@
+/* Difficulty selection dialog. Matrix theme via design tokens. */
+
+.dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-6);
+  background: var(--color-overlay-scrim);
+  z-index: var(--z-overlay);
+}
+
+.difficulty-dialog {
+  width: min(420px, 100%);
+  padding: var(--space-8) var(--space-6);
+  text-align: center;
+  color: var(--color-text);
+  font-family: var(--font-mono);
+  background: var(--color-surface-raised);
+  border: var(--border-med) solid var(--color-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-overlay);
+}
+
+.difficulty-dialog__title {
+  margin: 0 0 var(--space-1);
+  font-size: var(--font-size-xl);
+  color: var(--color-accent);
+  letter-spacing: var(--tracking-wide);
+  text-shadow: var(--glow-accent);
+}
+
+.difficulty-dialog__subtitle {
+  margin: 0 0 var(--space-5);
+  color: var(--color-text-dim);
+}
+
+.difficulty-dialog__preview {
+  display: block;
+  width: 100%;
+  max-height: 160px;
+  margin: 0 auto var(--space-5);
+  object-fit: cover;
+  border: var(--border-thin) solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.difficulty-dialog__options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.difficulty-dialog__option {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-3) var(--space-5);
+  font: inherit;
+  font-weight: var(--font-weight-bold);
+  text-align: left;
+  color: var(--color-accent-soft);
+  background: var(--color-surface);
+  border: var(--border-thin) solid var(--color-border);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: background var(--transition-fast), transform 0.05s ease, box-shadow var(--transition-fast);
+}
+
+.difficulty-dialog__option:hover {
+  background: var(--color-surface-raised);
+  box-shadow: var(--shadow-panel);
+}
+
+.difficulty-dialog__option:focus-visible {
+  outline: var(--border-med) solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.difficulty-dialog__option:active {
+  transform: translateY(1px);
+}
+
+.difficulty-dialog__option-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.difficulty-dialog__option-time {
+  color: var(--color-text-dim);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-normal);
+}
+
+.difficulty-dialog__option-details {
+  color: var(--color-text-dim);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-normal);
+}
+
+.difficulty-dialog__option--easy {
+  border-left: var(--border-thick) solid var(--color-difficulty-easy);
+}
+
+.difficulty-dialog__option--medium {
+  border-left: var(--border-thick) solid var(--color-difficulty-medium);
+}
+
+.difficulty-dialog__option--hard {
+  border-left: var(--border-thick) solid var(--color-difficulty-hard);
+}

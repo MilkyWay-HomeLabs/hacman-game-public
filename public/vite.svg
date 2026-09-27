@@ -1,0 +1,14 @@
+<!-- xml -->
+<svg xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="false" class="iconify iconify--hacman" width="64" height="64" preserveAspectRatio="xMidYMid slice" viewBox="0 0 256 228">
+  <title>hacman logo</title>
+  <defs>
+    <mask id="mouth-mask" maskUnits="userSpaceOnUse">
+      <rect width="100%" height="100%" fill="white"/>
+        <polygon points="168,114 240,78 240,150" fill="black"/>
+      <circle cx="140" cy="80" r="20" fill="black"/>
+    </mask>
+  </defs>
+
+  <!-- Body with masked mouth and eye (both become transparent) -->
+  <circle cx="138" cy="114" r="96" fill="#00FF41" mask="url(#mouth-mask)"/>
+</svg>

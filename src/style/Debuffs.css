@@ -1,0 +1,103 @@
+/* Debuff sprite: a warning-triangle SVG (DebuffSprite in
+   sprites/EntitySprite.tsx) rendered in an overlay span inside the cell.
+   Overlay positioning lives in App.css; this file only colors and animates
+   the sprite. Variant classes (.debuff-1 … .debuff-10) are load-bearing for
+   gameplay logic (they map to poison/slow/blind/… effects) — keep the names. */
+
+.debuff svg {
+    filter: drop-shadow(0 0 2px var(--debuff-color, #ff3b3b));
+}
+
+.debuff .debuff-body {
+    fill: var(--debuff-color, #ff3b3b);
+    stroke: rgba(0, 0, 0, 0.35);
+    stroke-width: 0.5;
+    stroke-linejoin: round;
+}
+
+.debuff .debuff-mark {
+    fill: var(--debuff-mark, rgba(0, 0, 0, 0.8));
+}
+
+/* Subtle warning pulse shared by all debuffs. */
+@keyframes debuff-warn {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+}
+
+.debuff {
+    animation: debuff-warn 2.4s ease-in-out infinite;
+}
+
+/* 10 debuff variants — same triangle shape, distinct colors. */
+
+/* Variant 1 - poison: sickly green */
+.debuff-1 {
+    --debuff-color: #2ecc71;
+}
+
+/* Variant 2 - slow: desaturated blue */
+.debuff-2 {
+    --debuff-color: #7aa7ff;
+    animation-duration: 3s;
+}
+
+/* Variant 3 - blind: dark triangle with a light mark so it stays readable */
+.debuff-3 {
+    --debuff-color: #4a4a4a;
+    --debuff-mark: rgba(255, 255, 255, 0.9);
+    animation-duration: 4s;
+}
+
+/* Variant 4 - burn: hot orange */
+.debuff-4 {
+    --debuff-color: #ff7a18;
+    animation-duration: 1.6s;
+}
+
+/* Variant 5 - drain: desaturated gray */
+.debuff-5 {
+    --debuff-color: #a5a5a5;
+    animation-duration: 3.2s;
+}
+
+/* Variant 6 - confuse: purple */
+.debuff-6 {
+    --debuff-color: #9b59b6;
+    animation-duration: 2s;
+}
+
+/* Variant 7 - spike: sharp red */
+.debuff-7 {
+    --debuff-color: #e74c3c;
+    animation-duration: 1.8s;
+}
+
+/* Variant 8 - freeze: icy pale blue */
+.debuff-8 {
+    --debuff-color: #aee9ff;
+    animation-duration: 3.4s;
+}
+
+/* Variant 9 - rust/weight: earthy brown */
+.debuff-9 {
+    --debuff-color: #c48f65;
+    animation-duration: 2.9s;
+}
+
+/* Variant 10 - glitch: neon cyan */
+.debuff-10 {
+    --debuff-color: #00d2ff;
+    animation-duration: 2.2s;
+}
+
+/* Respect user preference for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .debuff {
+        animation: none !important;
+    }
+}
